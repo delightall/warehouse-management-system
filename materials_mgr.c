@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <materials_mgr.h>
+#include "materials_mgr.h"
 
 #define MATERIALS_INFO_FILE "./materials_info.dat"
 
+list2 ml;
 
 // 借出物资
 void lend_materials(void)
@@ -16,16 +18,16 @@ void lend_materials(void)
     printf("请输入物资编号：\n");
     scanf("%s", m1.id);
     printf("请输入借出数量：\n");
-    scanf("%s", m1.num);
+    scanf("%ld", &m1.num);
 
-    push_back(l1, &m1);
+    push_back2(ml, &m1);
 
     FILE* fp = fopen(MATERIALS_INFO_FILE, "ab");
 
     if(fp == NULL)
     {
         perror("fopen fail");
-        return 0;
+        return;
     }
 
     fwrite(&m1, sizeof(m1), 1, fp);
@@ -43,7 +45,7 @@ void return_materials(void)
     printf("请输入物资编号：\n");
     scanf("%s", id);
 
-    materials* m1 = find(l1, id, &pos);
+    materials* m1 = find2(ml, id, &pos);
 
     if(m1 == NULL) 
     {
@@ -79,9 +81,31 @@ void get_time(void)
     time(&timep); 
     p = localtime(&timep);  //取得当地时间 
 
-    strcat(str, p->tm_year);
+    //strcat(str, p->tm_year);
     
-    scanf("%d/%d/%d %d:%d:%d\n", (1900 + p->tm_year), 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
+    printf("%d/%d/%d %d:%d:%d\n", (1900 + p->tm_year), 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
 }
     
 
+// 初始化物资借还记录链表
+void init_ml(void)
+{
+    ml = create2();
+
+    materials m2;
+
+    FILE* fp = fopen(MATERIALS_INFO_FILE, "rb");
+
+    if(fp == NULL)
+    {
+        perror("fopen fail!\n");
+        exit(1);
+    }
+
+    while(fread(&m2, sizeof(m2), 1, fp) == 1)
+    {
+        push_back2(ml, &m2);
+    }
+
+    fclose(fp);
+}
