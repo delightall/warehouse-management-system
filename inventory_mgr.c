@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "inventory_mgr.h"
-//#include "materials_mgr.h"
+#include "materials_mgr.h"
 
 #define INVENTORY_INFO_FILE "./inventory_info.dat"
 
@@ -12,7 +12,7 @@ list1 vl;
 void add_inventory(void)
 {
     inventory v1;
-    //materials m1;
+    materials m1;
 
     printf("请输入物资编号：\n");
     scanf("%s", v1.id);
@@ -21,7 +21,7 @@ void add_inventory(void)
     printf("请输入物资总数：\n");
     scanf("%ld", &v1.amount);
     
-    v1.margin = v1.amount; // 当前余量
+    v1.margin = v1.amount - m1.num; // 当前余量
 
     v1.delete_flag = 0;
 
@@ -164,7 +164,7 @@ void show_inventory(inventory* v)
 }
 
 
-// 初始化链表物资
+// 初始化物资链表
 void init_vl(void)
 {
     vl = create1();
