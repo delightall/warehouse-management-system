@@ -176,7 +176,7 @@ void add_user(void)
     printf("请输入姓名：\n");
     scanf("%s", u1.name);
 
-    printf("请输入性别：\n");
+    printf("请输入性别（0为男性，1为女性）：\n");
     scanf("%d", &u1.sex);
 
     while(1)
@@ -196,6 +196,8 @@ void add_user(void)
 
         printf("\n身份证号不合法，请重新输入！\n");
     }
+
+    md5_string(u1.password, u1.password);
 
     while(1)
     {
