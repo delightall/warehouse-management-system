@@ -3,6 +3,7 @@
 #include <string.h>
 #include "user_list.h"
 #include "inventory_mgr.h"
+#include "materials_mgr.h"
 #include "md5.h"
 
 void root_menu(void);
@@ -29,6 +30,7 @@ int main()
 
 	init_ul();
 	init_vl();
+	init_ml();
 
 	allwelcome();
     return 0;
