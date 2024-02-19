@@ -12,8 +12,8 @@ typedef struct
     char password[20];  // 用户密码,默认为身份证号的后六位
     char name[15];      // 用户姓名
     int sex;            // 用户性别（0为男，1为女）
-    char id_card[18];   // 用户身份证号
-    char phone_num[11]; // 用户手机号
+    char id_card[19];   // 用户身份证号
+    char phone_num[12]; // 用户手机号
     int delete_flag;    // 是否删除用户（0表示未删除，1表示已删除）
     int role;           // 1 表示系统管理员，2 表示普通用户
 } user;
