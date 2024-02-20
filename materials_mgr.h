@@ -37,6 +37,7 @@ extern list2 ml;
 
 void init_ml(void);
 void lend_materials(void);
+void return_materials(void);
 void update_inventory(void);
 list2 create2(void);
 // void destroy2(list2 l);
