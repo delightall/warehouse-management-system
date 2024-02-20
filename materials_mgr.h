@@ -8,12 +8,12 @@
 // 定义物资借还记录信息结构体
 typedef struct 
 {
-    char uid[20];           // 用户工号
-    char id[50];            // 物资编号
-    char lend_time[20];     // 借出时间
-    char return_time[20];   // 归还时间
-    long num;               // 借出数量
-    char bei[300];          // 备注
+    char uid[20];       // 用户工号
+    char id[50];        // 物资编号
+    long lend_time;     // 借出时间
+    long return_time;   // 归还时间
+    long num;           // 借出数量
+    char bei[300];      // 备注
 } materials;
 
 
@@ -52,6 +52,7 @@ void push_back2(list2 l, materials* data);
 // int update2(list2 l, char* id, materials* new_value);
 // materials* at2(list2 l, int pos);
 materials* find2(list2 l, char* id, int* pos);
+void show_msg(void);
 //void reverse(list2 l);
 // void traverse2(list2 l, int(*visit)(materials*));
 
