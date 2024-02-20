@@ -6,6 +6,7 @@
 
 
 list ul;
+user* us1;
 
 // 把用户信息写入文件中
 int write_usermsg(user* u1, const char* pathname)
@@ -27,8 +28,8 @@ int write_usermsg(user* u1, const char* pathname)
 
 
 
-// 登录验证
-void login_auth(void)
+// 管理员登录验证
+user* login_auth(void)
 {
     char account[20], password[20], password_md5[32];
 
@@ -36,11 +37,12 @@ void login_auth(void)
     printf("请输入用户名：");
     scanf("%s", account);
     printf("请输入密码：");
+    //system("stty -echo");
     scanf("%s", password);
+    //system("stty echo");
 
     md5_string(password, password_md5);
 
-    user u1;
     int auth_flag = 0;
 
     FILE* fp = fopen(USER_INFO_FILE, "rb");
@@ -51,9 +53,11 @@ void login_auth(void)
         exit(1);
     }
 
-    while(fread(&u1, sizeof(user), 1, fp) == 1)
+    us1 = malloc(sizeof(user)); 
+
+    while(fread(us1, sizeof(user), 1, fp) == 1)
     {
-        if(!strcmp(account, u1.account) && !strcmp(password_md5, u1.password))
+        if(!strcmp(account, us1->account) && !strcmp(password_md5, us1->password))
         {
             auth_flag = 1;
             break;
@@ -65,10 +69,11 @@ void login_auth(void)
     if(auth_flag)
     {
         printf("欢迎使用本系统！\n");
+        return us1;
     }
     else
     {
-        printf("用户名或密码错误，登录失败！\n");
+        printf("\n用户名或密码错误，登录失败！\n");
         exit(1);
     }
 }
@@ -534,7 +539,7 @@ void card_inquire(void)
 
     if(u1 == NULL) 
     {
-        printf("用户不存在， 查找失败");
+        printf("用户不存在，修改失败");
     }
     else
     {
@@ -543,3 +548,47 @@ void card_inquire(void)
 }
 
 
+// 普通用户修改登录密码
+void update_passwd(void)
+{
+    char passwd[20];
+    int pos;
+
+    printf("请输入新的密码：\n");
+    scanf("%s", passwd);
+    
+    user* u1 = find_uid(ul, us1->uid, &pos);
+
+    if(u1 == NULL) 
+    {
+        printf("用户不存在，修改失败\n");
+    }
+    else
+    {
+        FILE* fp = fopen(USER_INFO_FILE, "r+b");
+
+        if(fp == NULL)  
+        {
+            perror("foenp fail");
+            exit(1);
+        }
+        
+        strcmp(u1->password, passwd);
+
+        fseek(fp, pos * sizeof(user), SEEK_SET);
+        fwrite(u1, sizeof(user), 1, fp);
+        fclose(fp);
+        printf("密码修改成功\n");
+    }
+}
+
+
+// 查看个人信息
+void see(void)
+{
+    int pos;
+
+    user* u1 = find_uid(ul, us1->uid, &pos);
+
+    show_user(u1);
+}
