@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include "materials_mgr.h"
+#include "user_list.h"
+#include "inventory_mgr.h"
 
 #define MATERIALS_INFO_FILE "./materials_info.dat"
 
@@ -12,13 +14,25 @@ list2 ml;
 void lend_materials(void)
 {
     materials m1;
+    int pos;
+
+    strcpy(m1.uid, us1->uid);
 
     printf("请输入物资编号：\n");
     scanf("%s", m1.id);
+
+    while(find1(vl, m1.id, &pos) == NULL) 
+    {
+        printf("物资不存在，请重新输入\n");
+        scanf("%s", m1.id);
+    }
+
     printf("请输入借出数量：\n");
     scanf("%ld", &m1.num);
     printf("请输入备注：\n");
     scanf("%s", m1.bei);
+
+    time(&m1.lend_time);
 
     push_back2(ml, &m1);
 
@@ -53,9 +67,11 @@ void return_materials(void)
     }
     else
     {
-        FILE* fp = fopen(materials_INFO_FILE, "r+b");
+        FILE* fp = fopen(MATERIALS_INFO_FILE, "r+b");
 
         m1->num = 0;
+
+        time(&m1->return_time);
 
         if(fp == NULL)  
         {
@@ -69,19 +85,7 @@ void return_materials(void)
         printf("物资归还成功\n");
     }
 }
-
-
-// 获取当前时间
-void get_time(void)
-{
-    time_t timep; 
-    struct tm *p; 
-    char str[50] = "";
-
-    time(&timep); 
-    p = localtime(&timep);  //取得当地时间 
-}
-    
+ 
 
 // 初始化物资借还记录链表
 void init_ml(void)
@@ -108,9 +112,31 @@ void init_ml(void)
 
 
 // 查看借出和归还物资记录
-/* void show_msg()
+void show_msg(void)
 {
-    printf("*************");
-    printf("借出记录\n");
-    printf("物资编号：%s");
-} */
+    materials m1;
+
+    char datetime[50];
+    
+    FILE* fp = fopen(MATERIALS_INFO_FILE, "rb");
+
+    while(fread(&m1, sizeof(m1), 1, fp) == 1)
+    {
+        if(strcmp(m1.uid, us1->uid) == 0)
+        {
+            struct tm* lt = localtime(&m1.lend_time);
+            printf("工号：%s，物资编号：%s，借出数量：%ld，备注：%s\n", m1.uid, m1.id, m1.num, m1.bei);
+            strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", lt);  // 格式化时间输出
+            printf("借出时间：%s\n", datetime);
+
+            if(m1.num == 0)
+            {
+                struct tm* rt = localtime(&m1.return_time);
+                strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", rt);  // 格式化时间输出
+                printf("归还时间：%s\n", datetime);
+            }  
+        }
+    }
+
+    fclose(fp);
+} 
