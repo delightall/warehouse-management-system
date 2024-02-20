@@ -18,6 +18,8 @@ typedef struct
     int role;           // 1 表示系统管理员，2 表示普通用户
 } user;
 
+extern user* us1;
+
 // 声明链表节点结构体
 typedef struct node
 {
