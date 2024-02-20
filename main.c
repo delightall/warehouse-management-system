@@ -138,16 +138,39 @@ void user_menu(void)
         {
 			case 1: 
             {
-				//see();
+				update_passwd();
 				break;
 			}
  
 			case 2: 
             {
-				//exit(1);
+				see();
+				break;
+			}
+
+			case 3:
+			{
+				
+			}
+
+			case 4:
+			{
+				lend_materials();
+				break;
+			}
+
+			case 5:
+			{
+				return_materials();
 				break;
 			}
  
+			case 6: 
+            {
+				printf("\n谢谢使用，下次再见！\n");
+				exit(0);
+			}
+
 			default: 
             {
 				printf("请输入正确的序号\n");
