@@ -32,8 +32,7 @@ typedef struct
     int size;   // 链表长度
 } *list1;
 
-extern list1 l1;
-
+extern list1 vl;
 
 list1 create1(void);
 inventory* find1(list1 l, char* id, int* pos);
