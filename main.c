@@ -150,7 +150,8 @@ void user_menu(void)
 
 			case 3:
 			{
-				
+				show_msg();
+				break;
 			}
 
 			case 4:
