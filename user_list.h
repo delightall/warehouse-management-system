@@ -9,15 +9,14 @@ typedef struct
 {
     char uid[20];       // 用户工号
     char account[20];   // 用户名，普通用户用户名固定为工号
-    char password[20];  // 用户密码,默认为身份证号的后六位
+    char password[33];  // 用户密码，默认为身份证号的后六位
     char name[15];      // 用户姓名
     int sex;            // 用户性别（0为男，1为女）
-    char id_card[19];   // 用户身份证号
+    char id_card[19];   // 用户身份证号，字符串长度为19是要留一位存储'\0'
     char phone_num[12]; // 用户手机号
     int delete_flag;    // 是否删除用户（0表示未删除，1表示已删除）
     int role;           // 1 表示系统管理员，2 表示普通用户
 } user;
-
 
 // 声明链表节点结构体
 typedef struct node
@@ -39,7 +38,8 @@ extern list ul;
 
 
 int write_usermsg(user* u1, const char* pathname);
-void login_auth(void);
+void getpwd(char *pwd, int pwdlen);
+user* login_auth(void);
 void update_login(user root);
 int nian(char *p1);
 int check_card(char* a);
@@ -65,6 +65,7 @@ void insert(list l, node* pos, user* data);
 void erase(list l, node* pos);
 int remove2(list l, char* uid);
 int update(list l, char* uid, user* new_value);
+void update_passwd(void);
 user* at(list l, int pos);
 user* find_uid(list l, char* uid, int* pos);
 user* find_name(list l, char* name, int* pos);
@@ -72,5 +73,6 @@ user* find_phone(list l, char* phone, int* pos);
 user* find_card(list l, char* card, int* pos);
 //void reverse(list l);
 void traverse(list l, int(*visit)(user*));
+void see(void);
 
 #endif
